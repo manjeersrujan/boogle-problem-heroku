@@ -55,7 +55,6 @@ public class BoogleServiceImpl implements BoogleService {
 
 		BoogleBoard boogleBoard = new BoogleBoard(createBoardRequest.getBoard(), createBoardRequest.getDuration());
 
-		System.out.println(Thread.currentThread().getName());
 		boogleWordsGenerator.generateWordsAndSave(boogleBoard);
 
 		CreateBoardResponse createBoardResponse = getCreateBoardResponse(boogleBoard);
