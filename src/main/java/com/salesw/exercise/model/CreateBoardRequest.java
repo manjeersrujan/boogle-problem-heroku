@@ -9,7 +9,7 @@ public class CreateBoardRequest implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	Long duration;
-	boolean random;
+	Boolean random;
 	String board;
 	public Long getDuration() {
 		return duration;
@@ -17,10 +17,10 @@ public class CreateBoardRequest implements Serializable {
 	public void setDuration(Long duration) {
 		this.duration = duration;
 	}
-	public boolean isRandom() {
+	public Boolean isRandom() {
 		return random;
 	}
-	public void setRandom(boolean random) {
+	public void setRandom(Boolean random) {
 		this.random = random;
 	}
 	public String getBoard() {

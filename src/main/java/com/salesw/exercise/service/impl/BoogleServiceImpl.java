@@ -62,6 +62,7 @@ public class BoogleServiceImpl implements BoogleService {
 		x.setDuration(100000L);
 		x.setRandom(false);
 		x.setBoard("A, C, E, D, L, U, G, *, E, *, H,T, G, A, F, K");
+		            
 		boogleServiceImpl.createBoard(x);
 	}
 
@@ -83,12 +84,16 @@ public class BoogleServiceImpl implements BoogleService {
 
 	private void validateAndHandleCreateBoardRequest(CreateBoardRequest createBoardRequest)
 			throws SalesWhalesServiceException {
+		if(createBoardRequest.isRandom() ==null) {
+			throw new SalesWhalesServiceException("IS_RANDOM_FIELD_REQUIRED");
+		}
 		if (createBoardRequest.isRandom()) {
 			createBoardRequest.setBoard(generateRandomBoard());
 		} else if (StringUtils.isEmpty(createBoardRequest.getBoard())) {
-			throw new SalesWhalesServiceException("BOARD_STRING_IS_REQUIRED");
+			createBoardRequest.setBoard("T, A, P, *, E, A, K, S, O, B, R, S, S, *, X, D");
 		}
 
+		createBoardRequest.setBoard(createBoardRequest.getBoard().toUpperCase());
 		if (createBoardRequest.getDuration() == null) {
 			throw new SalesWhalesServiceException("BOARD_DURATION_IS_REQUIRED");
 		}
@@ -123,6 +128,8 @@ public class BoogleServiceImpl implements BoogleService {
 		if (boogleBoard.getExpiryTime() < new Date().getTime()) {
 			throw new SalesWhalesServiceException("BOARD_EXPIRED");
 		}
+		
+		playGameRequest.setWord(playGameRequest.getWord().toUpperCase());
 	}
 
 	@Override

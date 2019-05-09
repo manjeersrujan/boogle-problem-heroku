@@ -8,13 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class SalesWRedissonClient {
 
+	private static final String GETENV = System.getenv("REDIS_URL");
 	private RedissonClient client;
 
 	public SalesWRedissonClient() {
 		super();
 		try {
 			Config config = new Config();
-			config.useSingleServer().setAddress(System.getenv("REDIS_URL"));
+			config.useSingleServer().setAddress(GETENV);
 			client = Redisson.create(config);
 		} catch (Exception e) {
 			//Using local map

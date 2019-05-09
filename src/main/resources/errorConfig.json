@@ -26,5 +26,10 @@
 	"INVALID_WORD_NO_POINTS": {
 		"status": 400,
 		"message": "Invalid word for the board. No Points."
+	},
+	"IS_RANDOM_FIELD_REQUIRED": {
+		"status": 400,
+		"message": "'random' field is required"
 	}
+	
 }
