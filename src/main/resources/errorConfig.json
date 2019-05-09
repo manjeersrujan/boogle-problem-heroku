@@ -1,0 +1,30 @@
+{
+	"GENERIC_ERROR": {
+		"status": 500,
+		"message": "Internal Server Error"
+	},
+	"NO_BOARD_FOUND": {
+		"status": 404,
+		"message": "Board not found with given ID"
+	},
+	"INVALID_TOKEN": {
+		"status": 403,
+		"message": "Token is invalid"
+	},
+	"BOARD_EXPIRED": {
+		"status": 400,
+		"message": "Board already expired"
+	},
+	"BOARD_STRING_IS_REQUIRED": {
+		"status": 400,
+		"message": "Board string is missing in the request"
+	},
+	"BOARD_DURATION_IS_REQUIRED": {
+		"status": 400,
+		"message": "Board duration is missing in the request"
+	},
+	"INVALID_WORD_NO_POINTS": {
+		"status": 400,
+		"message": "Invalid word for the board. No Points."
+	}
+}
