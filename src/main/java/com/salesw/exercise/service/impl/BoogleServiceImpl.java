@@ -125,9 +125,9 @@ public class BoogleServiceImpl implements BoogleService {
 			throw new SalesWhalesServiceException("INVALID_TOKEN");
 		}
 
-		if (boogleBoard.getExpiryTime() < new Date().getTime()) {
-			throw new SalesWhalesServiceException("BOARD_EXPIRED");
-		}
+//		if (boogleBoard.getExpiryTime() < new Date().getTime()) {
+//			throw new SalesWhalesServiceException("BOARD_EXPIRED");
+//		}
 		
 		playGameRequest.setWord(playGameRequest.getWord().toUpperCase());
 	}
