@@ -3,15 +3,8 @@ package com.salesw.exercise.dao;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
-import org.redisson.Redisson;
 import org.redisson.api.RMap;
-import org.redisson.api.RedissonClient;
-import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.RedisClusterConnection;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.stereotype.Component;
 
 import com.salesw.exercise.model.BoogleBoard;
@@ -35,7 +28,6 @@ public class BoogleDao {
 		}
 
 		map.put(boogleBoard.getId(), boogleBoard);
-
 	}
 
 	public BoogleBoard get(long id) {
