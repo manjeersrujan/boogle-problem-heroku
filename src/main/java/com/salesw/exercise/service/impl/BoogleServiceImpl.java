@@ -1,17 +1,15 @@
 package com.salesw.exercise.service.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.salesw.exercise.biz.BoogleWordsGenerator;
 import com.salesw.exercise.dao.BoogleDao;
 import com.salesw.exercise.exception.SalesWhalesServiceException;
 import com.salesw.exercise.model.BoogleBoard;
@@ -27,34 +25,18 @@ import com.salesw.exercise.service.BoogleService;
  *
  */
 @Component
+@EnableAsync
 public class BoogleServiceImpl implements BoogleService {
 
 	public BoogleServiceImpl() throws IOException {
 		super();
-		BoogleServiceImpl.loadDict();
 	}
 
 	@Autowired
 	BoogleDao boogleDao;
 
-	private static Set<String> dict = new HashSet<>();
-
-	private static void loadDict() throws IOException {
-		InputStream in = BoogleServiceImpl.class.getClassLoader().getResourceAsStream("dictionary.txt");
-		IOUtils.readLines(in).stream().forEach(x -> dict.add(((String) x).trim().toUpperCase()));
-	}
-
-	static class TrieNode {
-		public static final int size = 26;
-		TrieNode[] child = new TrieNode[size];
-		boolean leaf;
-
-		public TrieNode() {
-			leaf = false;
-			for (int i = 0; i < size; i++)
-				child[i] = null;
-		}
-	}
+	@Autowired
+	BoogleWordsGenerator boogleWordsGenerator;
 
 	public static void main(String[] args) throws IOException, SalesWhalesServiceException {
 		BoogleServiceImpl boogleServiceImpl = new BoogleServiceImpl();
@@ -62,7 +44,7 @@ public class BoogleServiceImpl implements BoogleService {
 		x.setDuration(100000L);
 		x.setRandom(false);
 		x.setBoard("A, C, E, D, L, U, G, *, E, *, H,T, G, A, F, K");
-		            
+
 		boogleServiceImpl.createBoard(x);
 	}
 
@@ -73,9 +55,8 @@ public class BoogleServiceImpl implements BoogleService {
 
 		BoogleBoard boogleBoard = new BoogleBoard(createBoardRequest.getBoard(), createBoardRequest.getDuration());
 
-		generateWords(boogleBoard);
-
-		boogleDao.save(boogleBoard);
+		System.out.println(Thread.currentThread().getName());
+		boogleWordsGenerator.generateWordsAndSave(boogleBoard);
 
 		CreateBoardResponse createBoardResponse = getCreateBoardResponse(boogleBoard);
 
@@ -84,7 +65,7 @@ public class BoogleServiceImpl implements BoogleService {
 
 	private void validateAndHandleCreateBoardRequest(CreateBoardRequest createBoardRequest)
 			throws SalesWhalesServiceException {
-		if(createBoardRequest.isRandom() ==null) {
+		if (createBoardRequest.isRandom() == null) {
 			throw new SalesWhalesServiceException("IS_RANDOM_FIELD_REQUIRED");
 		}
 		if (createBoardRequest.isRandom()) {
@@ -128,14 +109,14 @@ public class BoogleServiceImpl implements BoogleService {
 		if (boogleBoard.getExpiryTime() < new Date().getTime()) {
 			throw new SalesWhalesServiceException("BOARD_EXPIRED");
 		}
-		
+
 		playGameRequest.setWord(playGameRequest.getWord().toUpperCase());
 	}
 
 	@Override
 	public GetGameResponse getGame(long id) throws SalesWhalesServiceException {
 		BoogleBoard boogleBoard = boogleDao.get(id);
-		if(boogleBoard == null) {
+		if (boogleBoard == null) {
 			throw new SalesWhalesServiceException("NO_BOARD_FOUND");
 		}
 		return getGetGameResponse(boogleBoard);
@@ -195,106 +176,11 @@ public class BoogleServiceImpl implements BoogleService {
 				if (!boogleBoard.getWords().contains(word)) {
 					throw new SalesWhalesServiceException("INVALID_WORD_NO_POINTS");
 				}
-				
+
 				boogleBoard.setPoints(boogleBoard.getPoints() + word.length());
 				boogleBoard.getWords().remove(word);
 			}
 		}
-	}
-
-	private void generateWords(BoogleBoard boogleBoard) {
-		TrieNode root = new TrieNode();
-		for (String str : dict) {
-			insert(root, str);
-		}
-		Set<String> wordsFound = new HashSet<>();
-		findWords(boogleBoard.getBoard(), root, wordsFound);
-		boogleBoard.setWords(wordsFound);
-		System.out.println(wordsFound);
-	}
-
-	private void findWords(char[][] board, TrieNode root, Set<String> wordsFound) {
-		boolean[][] visited = new boolean[4][4];
-		TrieNode pChild = root;
-
-		String str = "";
-
-		if (pChild != null && pChild.child != null) {
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 4; j++) {
-					if (board[i][j] != '*' && (board[i][j]) - 'A' < 26 && pChild.child[(board[i][j]) - 'A'] != null) {
-						str = str + board[i][j];
-						searchWord(pChild.child[(board[i][j]) - 'A'], board, i, j, visited, str, wordsFound);
-						str = "";
-					} else if (board[i][j] == '*') {
-						for (char k = 'A'; k <= 'Z'; k++) {
-							str = str + k;
-							searchWord(pChild.child[k - 'A'], board, i, j, visited, str, wordsFound);
-							str = "";
-						}
-					}
-				}
-			}
-		}
-
-	}
-
-	private void searchWord(TrieNode root, char[][] board, int i, int j, boolean[][] visited, String str,
-			Set<String> wordsFound) {
-
-		if (root == null) {
-			return;
-		}
-		if (root.leaf == true) {
-			wordsFound.add(str);
-		}
-
-		if (inLimit(i, j, visited)) {
-			visited[i][j] = true;
-			for (int k = 0; k < TrieNode.size; k++) {
-				if (root.child[k] != null) {
-					char ch = (char) (k + 'A');
-					int[] moves = { 0, 1, -1 };
-					for (int m = 0; m < moves.length; m++) {
-						for (int n = 0; n < moves.length; n++) {
-							if (!(m == 0 && n == 0)) {
-								int o = i + moves[m];
-								int p = j + moves[n];
-								if (inLimit(o, p, visited)) {
-									if (board[o][p] == ch) {
-										searchWord(root.child[k], board, o, p, visited, str + ch, wordsFound);
-									} else if (board[o][p] == '*') {
-										for (char l = 'A'; l <= 'Z'; l++) {
-											searchWord(root.child[l - 'A'], board, o, p, visited, str + l, wordsFound);
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			visited[i][j] = false;
-		}
-
-	}
-
-	void insert(TrieNode root, String word) {
-		int n = word.length();
-		TrieNode cur = root;
-
-		for (int i = 0; i < n; i++) {
-			int index = word.charAt(i) - 'A';
-			if (cur.child[index] == null) {
-				cur.child[index] = new TrieNode();
-			}
-			cur = cur.child[index];
-		}
-		cur.leaf = true;
-	}
-
-	boolean inLimit(int i, int j, boolean visited[][]) {
-		return (i >= 0 && i < 4 && j >= 0 && j < 4 && !visited[i][j]);
 	}
 
 }
