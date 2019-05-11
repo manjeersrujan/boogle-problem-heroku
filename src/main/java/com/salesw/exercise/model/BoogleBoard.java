@@ -7,10 +7,9 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.util.StringUtils;
 
 import com.salesw.exercise.exception.SalesWhalesServiceException;
-
-import io.micrometer.core.instrument.util.StringUtils;
 
 public class BoogleBoard implements Serializable {
 
@@ -101,7 +100,7 @@ public class BoogleBoard implements Serializable {
 	}
 
 	private char[][] generateBoardArray(String boardString2) {
-		if (StringUtils.isBlank(boardString2)) {
+		if (StringUtils.isEmpty(boardString2)) {
 			new SalesWhalesServiceException("INVALID_GAME_STRING");
 		}
 

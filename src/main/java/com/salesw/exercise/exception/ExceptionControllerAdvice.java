@@ -20,6 +20,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.salesw.exercise.model.GenericServiceResponse;
 
+/**
+ * @author yeddulamanjeersrujan
+ *
+ * May 11, 2019
+ *
+ */
 @ControllerAdvice("com.salesw")
 public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 

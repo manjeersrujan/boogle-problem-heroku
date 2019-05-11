@@ -8,6 +8,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+
+/**
+ * @author yeddulamanjeersrujan
+ *
+ * May 11, 2019
+ *
+ */
 @SpringBootApplication
 @Configuration
 @EnableAutoConfiguration

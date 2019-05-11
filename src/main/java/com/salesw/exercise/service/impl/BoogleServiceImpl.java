@@ -20,8 +20,11 @@ import com.salesw.exercise.model.PlayGameRequest;
 import com.salesw.exercise.model.PlayGameResponse;
 import com.salesw.exercise.service.BoogleService;
 
+
 /**
  * @author yeddulamanjeersrujan
+ *
+ * May 11, 2019
  *
  */
 @Component
@@ -39,13 +42,15 @@ public class BoogleServiceImpl implements BoogleService {
 	BoogleWordsGenerator boogleWordsGenerator;
 
 	public static void main(String[] args) throws IOException, SalesWhalesServiceException {
-		BoogleServiceImpl boogleServiceImpl = new BoogleServiceImpl();
-		CreateBoardRequest x = new CreateBoardRequest();
-		x.setDuration(100000L);
-		x.setRandom(false);
-		x.setBoard("A, C, E, D, L, U, G, *, E, *, H,T, G, A, F, K");
+//		BoogleServiceImpl boogleServiceImpl = new BoogleServiceImpl();
+//		CreateBoardRequest x = new CreateBoardRequest();
+//		x.setDuration(100000L);
+//		x.setRandom(false);
+//		x.setBoard("A, C, E, D, L, U, G, *, E, *, H,T, G, A, F, K");
+//
+//		boogleServiceImpl.createBoard(x);
+		
 
-		boogleServiceImpl.createBoard(x);
 	}
 
 	@Override
@@ -83,14 +88,13 @@ public class BoogleServiceImpl implements BoogleService {
 	public PlayGameResponse playGame(long id, PlayGameRequest playGameRequest) throws SalesWhalesServiceException {
 		BoogleBoard boogleBoard = boogleDao.get(id);
 
+		long start = new Date().getTime();
 		validatePlayGameRequest(playGameRequest, boogleBoard);
 
 		playGame(boogleBoard, playGameRequest.getWord());
-
-		boogleDao.save(boogleBoard);
-
+		
 		PlayGameResponse playGameResponse = getPlayGameResponse(boogleBoard);
-
+		
 		return playGameResponse;
 	}
 
