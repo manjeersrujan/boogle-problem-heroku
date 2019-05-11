@@ -18,12 +18,23 @@ import com.salesw.exercise.model.PlayGameRequest;
 import com.salesw.exercise.model.PlayGameResponse;
 import com.salesw.exercise.service.BoogleService;
 
+/**
+ * @author yeddulamanjeersrujan
+ *
+ * May 12, 2019
+ *
+ */
 @RestController
 public class BoogleController {
 
 	@Autowired
 	BoogleService boogleService;
 
+	/**
+	 * @param createBoardRequest
+	 * @return
+	 * @throws SalesWhalesServiceException
+	 */
 	@RequestMapping(value = "/games", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreateBoardResponse> createBoard(@RequestBody CreateBoardRequest createBoardRequest) throws SalesWhalesServiceException {
 		CreateBoardResponse createBoardResponse = boogleService.createBoard(createBoardRequest);
@@ -31,6 +42,12 @@ public class BoogleController {
 
 	}
 
+	/**
+	 * @param id
+	 * @param playGameRequest
+	 * @return
+	 * @throws SalesWhalesServiceException
+	 */
 	@RequestMapping(value = "/games/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PlayGameResponse> playGame(@PathVariable Long id,
 			@RequestBody PlayGameRequest playGameRequest) throws SalesWhalesServiceException {
@@ -38,6 +55,11 @@ public class BoogleController {
 		return ResponseEntity.status(HttpStatus.OK).body(playGameResponse);
 	}
 
+	/**
+	 * @param id
+	 * @return
+	 * @throws SalesWhalesServiceException
+	 */
 	@RequestMapping(value = "/games/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetGameResponse> getGame(@PathVariable Long id) throws SalesWhalesServiceException {
 		GetGameResponse getGameResponse = boogleService.getGame(id);

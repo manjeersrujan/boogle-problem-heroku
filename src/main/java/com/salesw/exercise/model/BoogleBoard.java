@@ -11,6 +11,12 @@ import org.springframework.util.StringUtils;
 
 import com.salesw.exercise.exception.SalesWhalesServiceException;
 
+/**
+ * @author yeddulamanjeersrujan
+ *
+ * May 12, 2019
+ *
+ */
 public class BoogleBoard implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -99,6 +105,10 @@ public class BoogleBoard implements Serializable {
 		this.points = points;
 	}
 
+	/**
+	 * @param boardString2
+	 * @return
+	 */
 	private char[][] generateBoardArray(String boardString2) {
 		if (StringUtils.isEmpty(boardString2)) {
 			new SalesWhalesServiceException("INVALID_GAME_STRING");

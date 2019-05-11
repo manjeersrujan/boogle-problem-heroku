@@ -2,6 +2,12 @@ package com.salesw.exercise.exception;
 
 import java.io.Serializable;
 
+/**
+ * @author yeddulamanjeersrujan
+ *
+ * May 12, 2019
+ *
+ */
 public class SalesWhalesServiceError implements Serializable {
 
 	public SalesWhalesServiceError() {

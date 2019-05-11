@@ -1,9 +1,14 @@
 package com.salesw.exercise.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 
+/**
+ * @author yeddulamanjeersrujan
+ *
+ * May 12, 2019
+ *
+ */
 public class GetBooglesResponse implements Serializable {
 
 	/**

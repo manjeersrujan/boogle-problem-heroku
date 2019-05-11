@@ -3,6 +3,13 @@ package com.salesw.exercise.model;
 import java.io.Serializable;
 
 
+/**
+ * @author yeddulamanjeersrujan
+ *
+ * May 12, 2019
+ *
+ * @param <T>
+ */
 public class GenericServiceResponse<T> implements Serializable {
 	
 	public GenericServiceResponse() {

@@ -13,10 +13,26 @@ import com.salesw.exercise.model.PlayGameResponse;
  */
 public interface BoogleService {
 
+	/**
+	 * @param createBoardRequest
+	 * @return
+	 * @throws SalesWhalesServiceException
+	 */
 	public CreateBoardResponse createBoard(CreateBoardRequest createBoardRequest) throws SalesWhalesServiceException;
 
+	/**
+	 * @param id
+	 * @param playGameRequest
+	 * @return
+	 * @throws SalesWhalesServiceException
+	 */
 	public PlayGameResponse playGame(long id,  PlayGameRequest playGameRequest) throws SalesWhalesServiceException;
 
+	/**
+	 * @param id
+	 * @return
+	 * @throws SalesWhalesServiceException
+	 */
 	public GetGameResponse getGame(long id) throws SalesWhalesServiceException;
 
 }

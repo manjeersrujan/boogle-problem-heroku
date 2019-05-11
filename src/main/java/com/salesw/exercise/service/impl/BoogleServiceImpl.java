@@ -25,6 +25,8 @@ import com.salesw.exercise.service.BoogleService;
  * @author yeddulamanjeersrujan
  *
  * May 11, 2019
+ * 
+ * Actual implementation of service
  *
  */
 @Component
@@ -41,18 +43,9 @@ public class BoogleServiceImpl implements BoogleService {
 	@Autowired
 	BoogleWordsGenerator boogleWordsGenerator;
 
-	public static void main(String[] args) throws IOException, SalesWhalesServiceException {
-//		BoogleServiceImpl boogleServiceImpl = new BoogleServiceImpl();
-//		CreateBoardRequest x = new CreateBoardRequest();
-//		x.setDuration(100000L);
-//		x.setRandom(false);
-//		x.setBoard("A, C, E, D, L, U, G, *, E, *, H,T, G, A, F, K");
-//
-//		boogleServiceImpl.createBoard(x);
-		
-
-	}
-
+	/* (non-Javadoc)
+	 * @see com.salesw.exercise.service.BoogleService#createBoard(com.salesw.exercise.model.CreateBoardRequest)
+	 */
 	@Override
 	public CreateBoardResponse createBoard(CreateBoardRequest createBoardRequest) throws SalesWhalesServiceException {
 
@@ -67,6 +60,10 @@ public class BoogleServiceImpl implements BoogleService {
 		return createBoardResponse;
 	}
 
+	/**
+	 * @param createBoardRequest
+	 * @throws SalesWhalesServiceException
+	 */
 	private void validateAndHandleCreateBoardRequest(CreateBoardRequest createBoardRequest)
 			throws SalesWhalesServiceException {
 		if (createBoardRequest.isRandom() == null) {
@@ -84,11 +81,13 @@ public class BoogleServiceImpl implements BoogleService {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.salesw.exercise.service.BoogleService#playGame(long, com.salesw.exercise.model.PlayGameRequest)
+	 */
 	@Override
 	public PlayGameResponse playGame(long id, PlayGameRequest playGameRequest) throws SalesWhalesServiceException {
 		BoogleBoard boogleBoard = boogleDao.get(id);
 
-		long start = new Date().getTime();
 		validatePlayGameRequest(playGameRequest, boogleBoard);
 
 		playGame(boogleBoard, playGameRequest.getWord());
@@ -98,6 +97,11 @@ public class BoogleServiceImpl implements BoogleService {
 		return playGameResponse;
 	}
 
+	/**
+	 * @param playGameRequest
+	 * @param boogleBoard
+	 * @throws SalesWhalesServiceException
+	 */
 	private void validatePlayGameRequest(PlayGameRequest playGameRequest, BoogleBoard boogleBoard)
 			throws SalesWhalesServiceException {
 		if (boogleBoard == null) {
@@ -116,6 +120,11 @@ public class BoogleServiceImpl implements BoogleService {
 		playGameRequest.setWord(playGameRequest.getWord().toUpperCase());
 	}
 
+	/* (non-Javadoc)
+	 * @see com.salesw.exercise.service.BoogleService#getGame(long)
+	 * 
+	 * Check the word and update map and points
+	 */
 	@Override
 	public GetGameResponse getGame(long id) throws SalesWhalesServiceException {
 		BoogleBoard boogleBoard = boogleDao.get(id);
@@ -125,6 +134,10 @@ public class BoogleServiceImpl implements BoogleService {
 		return getGetGameResponse(boogleBoard);
 	}
 
+	/**
+	 * @param boogleBoard
+	 * @return
+	 */
 	private GetGameResponse getGetGameResponse(BoogleBoard boogleBoard) {
 		GetGameResponse getGameResponse = new GetGameResponse();
 		getGameResponse.setBoard(boogleBoard.getBoardString());
@@ -137,6 +150,9 @@ public class BoogleServiceImpl implements BoogleService {
 		return getGameResponse;
 	}
 
+	/**
+	 * @return
+	 */
 	private String generateRandomBoard() {
 		StringBuffer buffer = new StringBuffer();
 		Random rand = new Random();
@@ -153,6 +169,10 @@ public class BoogleServiceImpl implements BoogleService {
 		return buffer.delete(buffer.length() - 1, buffer.length()).toString();
 	}
 
+	/**
+	 * @param boogleBoard
+	 * @return
+	 */
 	private CreateBoardResponse getCreateBoardResponse(BoogleBoard boogleBoard) {
 		CreateBoardResponse createBoardResponse = new CreateBoardResponse();
 		createBoardResponse.setBoard(boogleBoard.getBoardString());
@@ -162,6 +182,10 @@ public class BoogleServiceImpl implements BoogleService {
 		return createBoardResponse;
 	}
 
+	/**
+	 * @param boogleBoard
+	 * @return
+	 */
 	private PlayGameResponse getPlayGameResponse(BoogleBoard boogleBoard) {
 		PlayGameResponse playGameResponse = new PlayGameResponse();
 		playGameResponse.setBoard(boogleBoard.getBoardString());
@@ -173,6 +197,11 @@ public class BoogleServiceImpl implements BoogleService {
 		return playGameResponse;
 	}
 
+	/**
+	 * @param boogleBoard
+	 * @param word
+	 * @throws SalesWhalesServiceException
+	 */
 	private void playGame(BoogleBoard boogleBoard, String word) throws SalesWhalesServiceException {
 		if (boogleBoard != null) {
 			synchronized (boogleBoard) {

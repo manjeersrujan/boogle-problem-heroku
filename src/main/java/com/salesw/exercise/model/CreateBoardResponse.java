@@ -2,6 +2,12 @@ package com.salesw.exercise.model;
 
 import java.io.Serializable;
 
+/**
+ * @author yeddulamanjeersrujan
+ *
+ * May 12, 2019
+ *
+ */
 public class CreateBoardResponse implements Serializable {
 
 	/**

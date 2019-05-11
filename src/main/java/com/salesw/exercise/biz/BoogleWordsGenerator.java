@@ -14,6 +14,14 @@ import com.salesw.exercise.dao.BoogleDao;
 import com.salesw.exercise.model.BoogleBoard;
 import com.salesw.exercise.service.impl.BoogleServiceImpl;
 
+/**
+ * @author yeddulamanjeersrujan
+ *
+ * May 12, 2019
+ * 
+ * The actual class which finds all words for a board
+ *
+ */
 @Component
 public class BoogleWordsGenerator {
 
@@ -25,6 +33,14 @@ public class BoogleWordsGenerator {
 	@Autowired
 	BoogleDao boogleDao;
 
+	/**
+	 * @author yeddulamanjeersrujan
+	 *
+	 * May 12, 2019
+	 * 
+	 * Trie node structure
+	 *
+	 */
 	static class TrieNode {
 		public static final int size = 26;
 		TrieNode[] child = new TrieNode[size];
@@ -44,6 +60,9 @@ public class BoogleWordsGenerator {
 		IOUtils.readLines(in).stream().forEach(x -> dict.add(((String) x).trim().toUpperCase()));
 	}
 
+	/**
+	 * @param boogleBoard
+	 */
 	@Async
 	public void generateWordsAndSave(BoogleBoard boogleBoard) {
 		boogleDao.save(boogleBoard);
@@ -53,6 +72,9 @@ public class BoogleWordsGenerator {
 
 	}
 
+	/**
+	 * @param boogleBoard
+	 */
 	private void generateWords(BoogleBoard boogleBoard) {
 		TrieNode root = new TrieNode();
 		for (String str : dict) {
@@ -63,6 +85,11 @@ public class BoogleWordsGenerator {
 		boogleBoard.setWords(wordsFound);
 	}
 
+	/**
+	 * @param board
+	 * @param root
+	 * @param wordsFound
+	 */
 	private void findWords(char[][] board, TrieNode root, Set<String> wordsFound) {
 		boolean[][] visited = new boolean[4][4];
 		TrieNode pChild = root;
@@ -89,6 +116,15 @@ public class BoogleWordsGenerator {
 
 	}
 
+	/**
+	 * @param root
+	 * @param board
+	 * @param i
+	 * @param j
+	 * @param visited
+	 * @param str
+	 * @param wordsFound
+	 */
 	private void searchWord(TrieNode root, char[][] board, int i, int j, boolean[][] visited, String str,
 			Set<String> wordsFound) {
 
@@ -129,6 +165,10 @@ public class BoogleWordsGenerator {
 
 	}
 
+	/**
+	 * @param root
+	 * @param word
+	 */
 	void insert(TrieNode root, String word) {
 		int n = word.length();
 		TrieNode cur = root;
@@ -143,6 +183,14 @@ public class BoogleWordsGenerator {
 		cur.leaf = true;
 	}
 
+	/**
+	 * @param i
+	 * @param j
+	 * @param visited
+	 * @return
+	 * 
+	 * Is in board limits
+	 */
 	boolean inLimit(int i, int j, boolean visited[][]) {
 		return (i >= 0 && i < 4 && j >= 0 && j < 4 && !visited[i][j]);
 	}

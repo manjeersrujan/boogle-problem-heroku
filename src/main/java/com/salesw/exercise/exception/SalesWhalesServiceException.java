@@ -1,5 +1,11 @@
 package com.salesw.exercise.exception;
 
+/**
+ * @author yeddulamanjeersrujan
+ *
+ * May 12, 2019
+ *
+ */
 public class SalesWhalesServiceException extends Exception {
 
 	int statusCode;
