@@ -145,7 +145,7 @@ public class BoogleServiceImpl implements BoogleService {
 		getGameResponse.setId(boogleBoard.getId());
 		getGameResponse.setPoints(boogleBoard.getPoints());
 		long timeLeft = boogleBoard.getExpiryTime() - new Date().getTime();
-		getGameResponse.setTime_left(timeLeft > 0 ? timeLeft : 0);
+		getGameResponse.setTime_left(timeLeft > 0 ? (timeLeft/1000) : 0);
 		getGameResponse.setToken(boogleBoard.getToken());
 		return getGameResponse;
 	}

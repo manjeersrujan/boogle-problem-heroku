@@ -35,7 +35,7 @@ public class BoogleBoard implements Serializable {
 		this.boardString = boardString;
 		this.board = generateBoardArray(boardString);
 		this.id = generateUniqId();
-		this.expiryTime = new Date().getTime() + duration;
+		this.expiryTime = new Date().getTime() + (duration*1000);
 		this.points = 0L;
 		this.token = generateToken();
 		this.duration = duration;
