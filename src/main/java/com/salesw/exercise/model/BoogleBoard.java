@@ -31,7 +31,7 @@ public class BoogleBoard implements Serializable {
 	private Set<String> words = new HashSet<>();
 	private static AtomicInteger counter = new AtomicInteger(0);
 
-	public BoogleBoard(String boardString, long duration) {
+	public BoogleBoard(String boardString, long duration) throws SalesWhalesServiceException {
 		this.boardString = boardString;
 		this.board = generateBoardArray(boardString);
 		this.id = generateUniqId();
@@ -108,21 +108,26 @@ public class BoogleBoard implements Serializable {
 	/**
 	 * @param boardString2
 	 * @return
+	 * @throws SalesWhalesServiceException 
 	 */
-	private char[][] generateBoardArray(String boardString2) {
+	private char[][] generateBoardArray(String boardString2) throws SalesWhalesServiceException {
 		if (StringUtils.isEmpty(boardString2)) {
-			new SalesWhalesServiceException("INVALID_GAME_STRING");
+			throw new SalesWhalesServiceException("INVALID_GAME_STRING");
 		}
 
 		String[] split = boardString2.split(",");
 		if (split.length != 16) {
-			new SalesWhalesServiceException("INVALID_GAME_STRING");
+			throw new SalesWhalesServiceException("INVALID_GAME_STRING");
 		}
 		char[][] board = new char[4][4];
 		int k = 0;
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++, k++) {
-				board[i][j] = split[k].trim().charAt(0);
+				String trim = split[k].trim();
+				if(trim.length() !=1 || !((trim.charAt(0) >= 'A' && trim.charAt(0) <= 'Z') || trim.charAt(0) == '*')) {
+					throw new SalesWhalesServiceException("INVALID_GAME_STRING");
+				}
+				board[i][j] = trim.charAt(0);
 			}
 		}
 		return board;

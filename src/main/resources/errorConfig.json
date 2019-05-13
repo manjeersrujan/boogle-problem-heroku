@@ -30,6 +30,10 @@
 	"IS_RANDOM_FIELD_REQUIRED": {
 		"status": 400,
 		"message": "'random' field is required"
+	},
+	"INVALID_GAME_STRING": {
+		"status": 400,
+		"message": "Invalid board string"
 	}
 	
 }
