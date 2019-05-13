@@ -34,6 +34,10 @@
 	"INVALID_GAME_STRING": {
 		"status": 400,
 		"message": "Invalid board string"
+	},
+	"BOARD_DURATION_MUST_BE_GREATER_THAN_ZERO": {
+		"status": 400,
+		"message": "Duration should be greater than zero"
 	}
 	
 }

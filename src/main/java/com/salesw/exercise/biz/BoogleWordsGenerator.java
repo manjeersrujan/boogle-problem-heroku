@@ -195,4 +195,14 @@ public class BoogleWordsGenerator {
 		return (i >= 0 && i < 4 && j >= 0 && j < 4 && !visited[i][j]);
 	}
 
+	public BoogleDao getBoogleDao() {
+		return boogleDao;
+	}
+
+	public void setBoogleDao(BoogleDao boogleDao) {
+		this.boogleDao = boogleDao;
+	}
+	
+	
+
 }

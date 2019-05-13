@@ -79,6 +79,10 @@ public class BoogleServiceImpl implements BoogleService {
 		if (createBoardRequest.getDuration() == null) {
 			throw new SalesWhalesServiceException("BOARD_DURATION_IS_REQUIRED");
 		}
+		
+		if (createBoardRequest.getDuration() <= 0L) {
+			throw new SalesWhalesServiceException("BOARD_DURATION_MUST_BE_GREATER_THAN_ZERO");
+		}
 	}
 
 	/* (non-Javadoc)
